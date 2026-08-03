@@ -32,7 +32,7 @@ cp .env.example .env
 chmod 600 .env
 mkdir -p rclone
 nano .env
-./deploy.sh
+bash deploy.sh
 ```
 
 `.env` 必须修改 `SESSION_SECRET`（可用 `openssl rand -hex 32` 生成）、管理员密码、Bot Token 和自己的 Telegram 数字 ID。默认只监听 `127.0.0.1:8080`；从本机安全访问：
@@ -58,7 +58,7 @@ ssh user@your-vps 'chmod 600 /opt/rclonex/rclone/rclone.conf; cd /opt/rclonex; d
 
 Telegram：`/gd 电影/新片 <链接>`、`/dropbox 资料 <链接>`、`/status`、`/cancel <ID>`、`/retry <ID>`、`/help`。网页支持任务创建、状态轮询、重试/删除与受限 inbox 浏览。
 
-更新：`cd /opt/rclonex && ./update.sh`。日志：`docker compose logs -f api bot web`。停止：`docker compose down`。启动：`docker compose up -d`。
+更新：`cd /opt/rclonex && bash update.sh`。日志：`docker compose logs -f api bot web`。停止：`docker compose down`。启动：`docker compose up -d`。
 
 可选开机服务与日志轮转：
 
