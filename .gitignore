@@ -1,0 +1,10 @@
+.env
+rclone/
+*.db
+*.db-*
+downloads/
+logs/
+node_modules/
+frontend/dist/
+__pycache__/
+*.pyc
