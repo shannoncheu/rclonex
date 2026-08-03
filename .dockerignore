@@ -1,0 +1,10 @@
+.git
+.env
+rclone
+downloads
+logs
+work
+outputs
+**/__pycache__
+frontend/node_modules
+frontend/dist
