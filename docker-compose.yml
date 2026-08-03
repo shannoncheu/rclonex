@@ -1,0 +1,29 @@
+name: rclonex
+services:
+  api:
+    build: {context: ., dockerfile: backend/Dockerfile}
+    env_file: .env
+    volumes:
+      - app-data:/data
+      - app-downloads:/downloads
+      - app-logs:/logs
+      - ${RCLONE_CONFIG_HOST_PATH:-./rclone}:/config:ro
+    restart: unless-stopped
+  bot:
+    build: {context: ., dockerfile: backend/Dockerfile}
+    command: ["python","-m","app.bot"]
+    env_file: .env
+    volumes:
+      - app-data:/data
+      - app-downloads:/downloads
+      - app-logs:/logs
+      - ${RCLONE_CONFIG_HOST_PATH:-./rclone}:/config:ro
+    restart: unless-stopped
+    depends_on: [api]
+  web:
+    build: {context: ., dockerfile: frontend/Dockerfile}
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${WEB_PORT:-8080}:80"
+    restart: unless-stopped
+    depends_on: [api]
+volumes: {app-data: {}, app-downloads: {}, app-logs: {}}
