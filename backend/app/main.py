@@ -143,6 +143,13 @@ def files(remote:str,path:str='',user=Depends(auth)):
  path=safe_dir(path); p=subprocess.run(['rclone','lsjson',root(remote,path),'--config',os.getenv('RCLONE_CONFIG','/config/rclone.conf')],capture_output=True,text=True,shell=False)
  if p.returncode: raise HTTPException(502,'读取云盘失败')
  return json.loads(p.stdout)
+@app.get('/api/remotes')
+def remotes(user=Depends(auth)):
+ result=[]
+ for key in REMOTE:
+  p=subprocess.run(['rclone','lsd',f'{REMOTE[key]}:','--config',os.getenv('RCLONE_CONFIG','/config/rclone.conf')],capture_output=True,text=True,shell=False)
+  result.append({'id':key,'name':'Google Drive' if key=='gd' else 'Dropbox','connected':p.returncode==0,'root':f'{REMOTE[key]}:inbox/'})
+ return result
 @app.post('/api/files/{remote}/mkdir')
 def mkdir(remote:str,body:FileAction,user=Depends(csrf)):
  if remote not in REMOTE: raise HTTPException(404)
